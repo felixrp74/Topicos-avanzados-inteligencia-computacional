@@ -1,0 +1,30 @@
+    % Autor: FeliX_ Ramos Paredes
+    % Fecha: 01/10/2019
+
+    %SE BUSCA LOS PARES EN UNA LISTA
+    %SE BUSCA LOS IMPARES EN  OTRA LISTA
+
+    buscador([],[],[]):-!.
+    buscador([X_|LISTA1],[X_|LISTA2],LISTA3):-E is X_ mod 2, E = 0, buscador(LISTA1,LISTA2,LISTA3),!.
+    buscador([X_|LISTA1],LISTA2,[X_|LISTA3]):-F is X_ mod 2, F > 0, buscador(LISTA1,LISTA2,LISTA3),!.
+
+    % SE ORDENA LAS LISTAS DE ACUERDO AL LLAMADO DE LA FUNCION MAS ABAJO
+    ordena_listas(TEMPORAL_X, TEMPORAL_Y):-concat(CONCAT, [A,B|EE], TEMPORAL_X),B < A,concat(CONCAT, [B,A|EE], MM),ordena_listas(MM, TEMPORAL_Y).
+    ordena_listas(TEMPORAL_X, TEMPORAL_X):-!.
+
+    %SE COMPARA MIENTRAS SE VAN ORDENANDO
+    ordena_comparaciones([],[]).
+    ordena_comparaciones([H|T],S):-ordena_comparaciones(T,R), comparacioones_listas(H,R,S).
+
+    %SE COMPARAN LAS LISTAS PARA FINALMENTE SER CONCATENDAS
+    comparacioones_listas(X_,[],[X_]).
+    comparacioones_listas(X_,[H|T],[X_,H|T]):- X_=<H,!.
+    comparacioones_listas(X_,[H|T],[H|S]):-comparacioones_listas(X_,T,S).
+
+    %SE CONCATENANA LAS LISTAS 
+    union_listas([],[],[],[]):-!.
+    union_listas([X_|L],I,[Y|P2],[Y|R]):-A is X_ mod 2, A = 0, union_listas(L,I,P2,R).
+    union_listas([X_|L],[Y|I1],P1,[Y|R]):-B is X_ mod 2, B > 0, union_listas(L,I1,P1,R).
+
+    %SE LLAMA CON LA FUNCION: 
+    ordenar_pares_impares(LISTA1,LISTA2):-buscador(LISTA1,C1,C2),ordena_comparaciones(C1,CF1),ordena_comparaciones(C2,CF2),union_listas(LISTA1,CF2,CF1,LISTA2).
